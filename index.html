@@ -404,6 +404,47 @@
     .ritual .circ{transition:none}
     .marquee-track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}
   }
+  /* ── COMPACT ENQUIRY POPUP ─────────────────────────────────── */
+  .oe-overlay{position:fixed;inset:0;z-index:190;display:none;align-items:center;justify-content:center;padding:28px 20px;background:rgba(46,51,42,.42);opacity:0;transition:opacity .5s ease}
+  .oe-overlay.oe-show{display:flex}
+  .oe-overlay.oe-in{opacity:1}
+  .oe-card{position:relative;width:100%;max-width:452px;max-height:86vh;overflow-y:auto;text-align:center;padding:34px 32px 28px;border:1px solid var(--line);border-radius:12px;box-shadow:0 34px 80px -30px rgba(46,51,42,.6);background:linear-gradient(90deg,var(--gold-soft),var(--gold) 50%,var(--gold-soft)) top/100% 3px no-repeat,var(--ivory);transform:translateY(16px) scale(.985);opacity:0;transition:transform .55s cubic-bezier(.22,.7,.28,1),opacity .5s ease}
+  .oe-overlay.oe-in .oe-card{transform:none;opacity:1}
+  .oe-close{position:absolute;top:13px;right:13px;width:34px;height:34px;padding:0;border-radius:50%;background:#fff;border:1px solid var(--line);color:var(--muted);font-family:'Jost',sans-serif;font-size:1.3rem;font-weight:300;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.28s;z-index:2}
+  .oe-close:hover{background:var(--maroon);border-color:var(--maroon);color:#fff}
+  .oe-title{font-family:'Cormorant Garamond',serif;font-size:1.72rem;font-weight:500;line-height:1.16;color:var(--ink);padding:0 26px}
+  .oe-rule{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--gold);margin:12px auto 10px}
+  .oe-rule span{height:1px;width:38px;background:linear-gradient(90deg,transparent,var(--gold-soft))}
+  .oe-rule span:last-child{background:linear-gradient(90deg,var(--gold-soft),transparent)}
+  .oe-rule svg{width:15px;height:15px}
+  .oe-lede{color:var(--muted);font-size:.87rem;line-height:1.6;margin:0 auto 20px;max-width:23rem}
+  .oe-card .field{margin-bottom:13px;text-align:left}
+  .oe-card .field label{font-size:.64rem;letter-spacing:.16em;margin-bottom:6px}
+  .oe-card .field input,.oe-card .field select{padding:10px 13px;font-size:.9rem}
+  .oe-card .field-row{gap:13px}
+  .oe-card .submit{margin-top:5px;padding:13px;font-size:.8rem;letter-spacing:.18em}
+  .oe-card .submit:disabled{opacity:.72;cursor:default}
+  .oe-msg{margin-top:12px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.98rem;line-height:1.5;color:var(--olive)}
+  .oe-msg.oe-err{color:#B24A3A}
+  .oe-thanks{display:none;padding:8px 4px 2px}
+  .oe-thanks p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.06rem;line-height:1.55;color:var(--olive)}
+  .oe-card.oe-done .oe-form{display:none}
+  .oe-card.oe-done .oe-thanks{display:block}
+  .oe-wa{display:inline-flex;align-items:center;gap:8px;margin-top:15px;font-size:.82rem;letter-spacing:.06em;color:var(--sage-deep);border-bottom:1px solid var(--gold-soft);padding-bottom:3px;transition:.3s}
+  .oe-wa:hover{color:var(--emerald);border-color:var(--olive)}
+  .oe-wa svg{width:15px;height:15px;color:#25A366;flex-shrink:0}
+  .oe-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  @media (max-width:560px){
+    .oe-overlay{padding:18px 14px}
+    .oe-card{max-width:none;max-height:88vh;padding:28px 20px 24px}
+    .oe-title{font-size:1.46rem;padding:0 8px}
+    .oe-lede{font-size:.83rem;margin-bottom:16px}
+    .oe-card .field{margin-bottom:11px}
+    .oe-card .field input,.oe-card .field select{padding:9px 12px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .oe-overlay,.oe-card{transition:none}
+  }
 </style>
 </head>
 <body>
@@ -972,6 +1013,109 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none"/></svg>
   </a>
 </div>
+
+<!-- COMPACT ENQUIRY POPUP -->
+<div class="oe-overlay" id="oePopup" role="dialog" aria-modal="true" aria-labelledby="oeTitle" aria-hidden="true">
+  <div class="oe-card" id="oeCard">
+    <button class="oe-close" id="oeClose" type="button" aria-label="Close">&times;</button>
+    <h3 class="oe-title" id="oeTitle">Planning Something Extraordinary?</h3>
+    <div class="oe-rule"><span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2s5 4 5 9a5 5 0 01-10 0c0-5 5-9 5-9z"/></svg><span></span></div>
+    <p class="oe-lede">Tell us a little about your celebration. Our team will help bring your vision to life.</p>
+
+    <form class="oe-form" id="oeForm" name="omaaya-popup-enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="omaaya-popup-enquiry">
+      <p class="oe-hp"><label>Please leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+      <div class="field-row">
+        <div class="field"><label for="oe-name">Your name</label><input type="text" id="oe-name" name="name" placeholder="Your name" autocomplete="name"></div>
+        <div class="field"><label for="oe-phone">Phone number</label><input type="tel" id="oe-phone" name="phone" placeholder="+91" autocomplete="tel"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="oe-occasion">Occasion</label>
+          <select id="oe-occasion" name="occasion"><option value="">Select</option><option>Wedding</option><option>Destination Wedding</option><option>Pre-Wedding Shoot</option><option>Birthday Party</option><option>Sangeet / Cocktail</option><option>Haldi / Mehndi</option><option>Reception</option><option>Catering only</option><option>Other function</option></select>
+        </div>
+        <div class="field"><label for="oe-date">Event date</label><input type="date" id="oe-date" name="event-date"></div>
+      </div>
+      <div class="field"><label for="oe-location">Location</label><input type="text" id="oe-location" name="location" placeholder="City or venue"></div>
+      <button class="submit" type="submit" id="oeSubmit">Begin Your Enquiry</button>
+      <div class="oe-msg" id="oeMsg" role="status" aria-live="polite"></div>
+    </form>
+
+    <div class="oe-thanks" id="oeThanks"><p id="oeThanksText"></p></div>
+
+    <a class="oe-wa" id="oeWa" href="https://wa.me/917292097905" target="_blank" rel="noopener">Or chat with us on WhatsApp</a>
+  </div>
+</div>
+
+<script>
+  /* Compact enquiry popup — appears once per browsing session, ~10s after arrival */
+  (function(){
+    const pop=document.getElementById('oePopup');
+    if(!pop) return;
+    const card=document.getElementById('oeCard');
+    const form=document.getElementById('oeForm');
+    const msg=document.getElementById('oeMsg');
+    const btn=document.getElementById('oeSubmit');
+    const wa=document.getElementById('oeWa');
+    const KEY='omaaya-enquiry-popup-seen';
+
+    /* Reuse the WhatsApp number and greeting already configured on the site */
+    const waSrc=document.querySelector('.enq-side a[href*="wa.me"]')||document.querySelector('.social-float a[href*="wa.me"]');
+    if(waSrc) wa.href=waSrc.getAttribute('href');
+    const waIcon=document.querySelector('.social-float a.wa svg');
+    if(waIcon) wa.insertBefore(waIcon.cloneNode(true),wa.firstChild);
+
+    let seen=false;
+    try{ seen=sessionStorage.getItem(KEY)==='1'; }catch(e){}
+
+    function open(){
+      pop.classList.add('oe-show');
+      pop.setAttribute('aria-hidden','false');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>pop.classList.add('oe-in')));
+      try{ sessionStorage.setItem(KEY,'1'); }catch(e){}
+    }
+    function close(){
+      pop.classList.remove('oe-in');
+      pop.setAttribute('aria-hidden','true');
+      setTimeout(()=>pop.classList.remove('oe-show'),480);
+    }
+
+    if(!seen) setTimeout(open,10000);
+
+    document.getElementById('oeClose').addEventListener('click',close);
+    pop.addEventListener('click',e=>{ if(e.target===pop) close(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&pop.classList.contains('oe-show')) close(); });
+    wa.addEventListener('click',()=>setTimeout(close,200));
+
+    form.addEventListener('submit',async e=>{
+      e.preventDefault();
+      const nm=document.getElementById('oe-name').value.trim();
+      const ph=document.getElementById('oe-phone').value.trim();
+      msg.classList.remove('oe-err');
+      if(!nm||!ph){
+        msg.classList.add('oe-err');
+        msg.textContent='Please add your name and phone so we can reach you.';
+        return;
+      }
+      msg.textContent='';
+      btn.disabled=true; btn.textContent='Sending…';
+      try{
+        const res=await fetch('/',{
+          method:'POST',
+          headers:{'Content-Type':'application/x-www-form-urlencoded'},
+          body:new URLSearchParams(new FormData(form)).toString()
+        });
+        if(!res.ok) throw new Error(res.status);
+        document.getElementById('oeThanksText').textContent='Thank you, '+nm.split(' ')[0]+' — your enquiry is noted. Our team will be in touch soon.';
+        card.classList.add('oe-done');
+        setTimeout(close,3600);
+      }catch(err){
+        btn.disabled=false; btn.textContent='Begin Your Enquiry';
+        msg.classList.add('oe-err');
+        msg.textContent='We could not send that just now. Please try WhatsApp or call us instead.';
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>
